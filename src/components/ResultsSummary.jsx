@@ -1,4 +1,12 @@
-export default function ResultsSummary({ paycheckResults }) {
+import { useAuth } from "../context/AuthContext";
+import { logPaycheck } from "../firebase/firestore";
+
+export default function ResultsSummary({ paycheckResults, meta }) {
+  const { user } = useAuth();
+
+  const handleLog = async () => {
+    await logPaycheck(user.uid, paycheckResults, meta);
+  }
 
     return (
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-3">
@@ -18,6 +26,13 @@ export default function ResultsSummary({ paycheckResults }) {
             <div className="border-t border-gray-100 pt-3">
             <ResultRow label="Net Pay (Take Home)" value={paycheckResults.netPay} highlight />
             </div>
+            <button
+              onClick={handleLog}
+              type="button"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition-colors duration-200"
+            >
+              Log Paycheck
+            </button>
         </div>
     )
 }

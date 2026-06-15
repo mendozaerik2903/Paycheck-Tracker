@@ -8,6 +8,7 @@ const INITIAL_FORM_STATE = {
   overtimeMultiplier: '1.5',
   preTaxDeductions: '0',
   postTaxDeductions: '0',
+  payPeriodEnd: '',
 };
 
 export default function PaycheckForm({ onCalculate }) {
@@ -27,6 +28,7 @@ export default function PaycheckForm({ onCalculate }) {
       overtimeMultiplier: parseFloat(formData.overtimeMultiplier),
       preTaxDeductions: parseFloat(formData.preTaxDeductions),
       postTaxDeductions: parseFloat(formData.postTaxDeductions),
+      payPeriodEnd: formData.payPeriodEnd,
     });
   }
 
@@ -35,6 +37,14 @@ export default function PaycheckForm({ onCalculate }) {
       <h2 className="text-lg font-semibold text-gray-800">Enter Paycheck Details</h2>
 
       <div className="grid grid-cols-2 gap-4">
+        <FormField
+          label="Pay Period End Date"
+          name="payPeriodEnd"
+          value={formData.payPeriodEnd}
+          onChange={handleChange}
+          placeholder="e.g. June 4, 2026"
+          type="date" 
+        />
         <FormField
           label="Hourly Wage ($)"
           name="hourlyWage"
@@ -91,18 +101,17 @@ export default function PaycheckForm({ onCalculate }) {
 }
 
 // Small reusable sub-component — lives here since nothing else uses it
-function FormField({ label, name, value, onChange, placeholder }) {
+function FormField({ label, name, value, onChange, placeholder, type = "number" }) {
   return (
     <div className="flex flex-col gap-1">
       <label className="text-sm font-medium text-gray-600">{label}</label>
       <input
-        type="number"
+        type={type}
         name={name}
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        min="0"
-        step="0.01"
+        {...(type === "number" && { min: "0", step: "0.01" })}
         required
         className="border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
