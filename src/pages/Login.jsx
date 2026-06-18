@@ -17,14 +17,23 @@ export default function Login() {
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-          await signInWithEmailAndPassword(auth, formData.email, formData.password);
-          navigate('/');
-        } catch (err) {
-            setError(err.message);
-        }
-      };
+      e.preventDefault();
+      try {
+        await signInWithEmailAndPassword(auth, formData.email, formData.password);
+        navigate('/');
+      } catch (err) {
+          setError(err.message);
+      }
+    };
+    
+    const handleDemoLogin = async () => {
+      try {
+        await signInWithEmailAndPassword(auth, "demo@paychecktracker.com", "demo123");
+        navigate('/');
+      } catch (err) {
+          setError(err.message);
+      }
+    };
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -52,6 +61,13 @@ export default function Login() {
                 className="bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors"
               >
                 Log In
+              </button>
+              <button 
+                type="button"
+                onClick={handleDemoLogin}
+                className="w-full border border-gray-300 text-gray-600 py-2 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                Try Demo Account
               </button>
               {error && <p className="text-red-500 text-sm">{error}</p>}
             </form>
